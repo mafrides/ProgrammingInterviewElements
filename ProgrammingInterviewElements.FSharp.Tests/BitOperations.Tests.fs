@@ -11,6 +11,29 @@ let Odds = Seq.skip 1 Odds4Bit //an odd number of odds
 let isEven x = x % 2 = 0
 let isOdd x = not <| isEven x
 
+
+// Tests for BitPosition Type range (uses ulong.getBit)
+
+[<Fact>]
+let bitPositionRejectsNegativePositionsWithInvalidArgs() =
+    let action() = ulong.MaxValue.getBit(BitPosition -1) |> ignore 
+    Assert.Throws<ArgumentException>(action) |> ignore
+
+[<Fact>]
+let bitPositionRejectsNegativePositionsWithInvalidArgs2() =
+    let action() = ulong.MaxValue.getBit(BitPosition Int32.MinValue) |> ignore 
+    Assert.Throws<ArgumentException>(action) |> ignore
+
+[<Fact>]
+let bitPositionRejectsPositionGreaterThan63WithInvalidArgs() =
+    let action() = ulong.MaxValue.getBit(BitPosition 64) |> ignore 
+    Assert.Throws<ArgumentException>(action) |> ignore
+
+[<Fact>]
+let bitPositionRejectsPositionGreaterThan63WithInvalidArgs2() =
+    let action() = ulong.MaxValue.getBit(BitPosition Int32.MaxValue) |> ignore 
+    Assert.Throws<ArgumentException>(action) |> ignore
+
 // Problem 5.1 Tests
 
 [<Fact>]
@@ -57,44 +80,21 @@ let hasOddParityIEnumerableFailsForEvenNumberOfOdds() =
 let hasOddParityIEnumerableFailsForEvens() =
     Assert.False <| Evens4Bit.hasOddParity()
     
+// Problem 5.2 Tests
 
-//        #region Problem 5.2 Tests
-//
-//        [Fact]
-//        public void exchangeBitsIndexRangeTest()
-//        {
-//            ulong x = uint.MaxValue; //all ones in lower half
-//            ulong y = x;
-//            Assert.Equal(BitOperations.exchangeBits(x, 64, 0), y);
-//            Assert.Equal(BitOperations.exchangeBits(x, 0, 64), y);
-//            Assert.NotEqual(BitOperations.exchangeBits(x, 0, 63), y);
-//        }
-//
-//        [Fact]
-//        public void exchangeBitsIGreaterThanJ()
-//        {
-//            ulong x = uint.MaxValue;
-//            ulong y = x;
-//            ulong result = (y - 1UL) | (1UL << 63);
-//            Assert.NotEqual(BitOperations.exchangeBits(x, 63, 0), y);
-//            Assert.Equal(BitOperations.exchangeBits(x, 63, 0), result);
-//        }
-//
-//        [Fact]
-//        public void exchangeBitsILessThanJ()
-//        {
-//            ulong x = uint.MaxValue;
-//            ulong y = x;
-//            ulong result = (y - 1UL) | (1UL << 63);
-//            Assert.NotEqual(BitOperations.exchangeBits(x, 0, 63), y);
-//            Assert.Equal(BitOperations.exchangeBits(x, 0, 63), result);
-//        }
-//
-//        [Fact]
-//        public void exchangeBitsIEqualsJ()
-//        {
-//            ulong x = uint.MaxValue;
-//            ulong y = x;
-//            Assert.Equal(BitOperations.exchangeBits(x, 0, 0), y);
-//        }
+[<Fact>]
+let swapBitsUlongReturnsIntialValueWhenBitPositionsEqual =
+    let x = uint64 UInt32.MaxValue
+    Assert.Equal(x, x.swapBits (BitPosition 0) (BitPosition 0))
 
+[<Fact>]
+let swapBitsUlongSwapsWhenArg1GreaterThanArg2 =
+    let x = uint64 UInt32.MaxValue
+    let expected = (x - 1UL) ||| (1UL <<< 63)
+    Assert.Equal(expected, x.swapBits (BitPosition 63) (BitPosition 0))
+
+[<Fact>]
+let swapBitsULongSwapsWhenArg1LessThanArg2 =
+    let x = uint64 UInt32.MaxValue
+    let expected = (x - 1UL) ||| (1UL <<< 63)
+    Assert.Equal(expected, x.swapBits (BitPosition 0) (BitPosition 63))
