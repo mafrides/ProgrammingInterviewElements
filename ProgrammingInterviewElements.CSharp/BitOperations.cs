@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Diagnostics;
+using System.Text;
 
 namespace ProgrammingInterviewElements.CSharp
 {
@@ -60,6 +62,28 @@ namespace ProgrammingInterviewElements.CSharp
             ulong setMask = ((x >> delta) & (1UL << jj)) |
                             ((x << delta) & (1UL << ii));
             return (x & clearMask) | setMask;
+        }
+
+        #endregion
+
+        #region Problem 5.3 Methods
+
+        public const ulong Low1  = 0x5555555555555555;
+        public const ulong Low2  = 0x3333333333333333;
+        public const ulong Low4  = 0x0f0f0f0f0f0f0f0f;
+        public const ulong Low8  = 0x00ff00ff00ff00ff;
+        public const ulong Low16 = 0x0000ffff0000ffff;
+        public const ulong Low32 = 0x00000000ffffffff;
+
+        public static ulong reverseBits(ulong x)
+        {
+            x = ((x >> 32) & Low32) | ((x << 32) & (Low32 << 32));
+            x = ((x >> 16) & Low16) | ((x << 16) & (Low16 << 16));
+            x = ((x >> 8) & Low8) | ((x << 8) & (Low8 << 8));
+            x = ((x >> 4) & Low4) | ((x << 4) & (Low4 << 4));
+            x = ((x >> 2) & Low2) | ((x << 2) & (Low2 << 2));
+            x = ((x >> 1) & Low1) | ((x << 1) & (Low1 << 1));
+            return x;
         }
 
         #endregion

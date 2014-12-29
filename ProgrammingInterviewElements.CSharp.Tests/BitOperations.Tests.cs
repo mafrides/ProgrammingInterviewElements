@@ -17,6 +17,25 @@ namespace ProgrammingInterviewElements.CSharp.Tests
                 1UL, 2UL, 4UL, 7UL, 8UL, 11UL, 13UL, 14UL
             };
 
+        //Helper methods to generate random UInt64s
+        public static ulong randomUlong(Random generator)
+        {
+            var bytes = new byte[sizeof(ulong)];
+            generator.NextBytes(bytes);
+            return BitConverter.ToUInt64(bytes, 0);
+        }
+
+        public static List<ulong> randomUlongs(int quantity)
+        {
+            quantity = quantity < 1 ? 1 : quantity;
+            var result = new List<ulong>(quantity);
+            Random generator = new Random();
+            for(int i = 0; i < quantity; ++i)
+            {
+                result.Add(randomUlong(generator));
+            }
+            return result;
+        }
 
         #region Problem 5.1 Tests
 
@@ -94,6 +113,23 @@ namespace ProgrammingInterviewElements.CSharp.Tests
             ulong x = uint.MaxValue;
             ulong y = x;
             Assert.Equal(BitOperations.exchangeBits(x, 0, 0), y);
+        }
+
+        #endregion
+
+        #region Problem 5.3 Tests
+
+        [Fact]
+        public void reverseBitsTest()
+        {
+            var testRuns = 30;
+            foreach(ulong testValue in randomUlongs(testRuns))
+            {
+                ulong result = BitOperations.reverseBits(testValue);
+                string resultString = Convert.ToString((long)result, 2).PadLeft(64, '0');
+                string testValueString = Convert.ToString((long)testValue, 2).PadLeft(64, '0');               
+                Assert.Equal(testValueString.Reverse(), resultString);
+            }
         }
 
         #endregion
