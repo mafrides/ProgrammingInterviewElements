@@ -24,10 +24,26 @@ type UInt64 with
         | Zero -> x &&& ~~~(1UL <<< i.Position)
     member x.setBit (i:BitPosition) = x.setBitTo One
     member x.clearBit (i:BitPosition) = x.setBitTo Zero
-    //Solution to Problem 5.2 as extensions to UInt64
+    //Solution to Problem 5.2 as extension to UInt64
     member x.swapBits i j = 
         let y = x.setBitTo (x.getBit i) j
         y.setBitTo (x.getBit j) i
+    //Solution to Problem 5.3 as extension to UInt64
+    member x.reverseBits =
+        let Masks = 
+            [| 0x00000000ffffffffUL, 32;
+               0x0000ffff0000ffffUL, 16;
+               0x00ff00ff00ff00ffUL,  8;
+               0x0f0f0f0f0f0f0f0fUL,  4;
+               0x3333333333333333UL,  2;
+               0x5555555555555555UL,  1|]
+        let reverseBitsInternal() =
+            let num = ref x
+            let flip(mask,offset) = 
+                num := ((!num >>> offset) &&& mask) ||| ((!num <<< offset) &&& (mask <<< offset))
+            Masks |> Array.iter flip               
+            !num
+        reverseBitsInternal
 
 let hasEvenParity (x:ulong) =
     let powersOf2_1To32 = Seq.unfold (fun i -> if i >= 64 then None else Some(i, i * 2)) 1

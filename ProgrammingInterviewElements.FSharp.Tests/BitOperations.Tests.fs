@@ -11,7 +11,6 @@ let Odds = Seq.skip 1 Odds4Bit //an odd number of odds
 let isEven x = x % 2 = 0
 let isOdd x = not <| isEven x
 
-
 // Tests for BitPosition Type range (uses ulong.getBit)
 
 [<Fact>]
@@ -98,3 +97,25 @@ let swapBitsULongSwapsWhenArg1LessThanArg2 =
     let x = uint64 UInt32.MaxValue
     let expected = (x - 1UL) ||| (1UL <<< 63)
     Assert.Equal(expected, x.swapBits (BitPosition 0) (BitPosition 63))
+
+// Problem 5.3 Tests
+
+type UInt64 with
+    static member random =
+        let r = Random()
+        let bytes = Array.create sizeof<ulong> 0uy
+        let internalRandom() =
+            r.NextBytes bytes
+            BitConverter.ToUInt64(bytes, 0)
+        internalRandom
+    static member randoms count =
+        Array.init count (fun _ -> ulong.random())   
+                 
+[<Fact>]
+let reverseBitsUInt64ReversesBits() = 
+    let test (x:ulong) =
+        let result = x.reverseBits()
+        let resultString = Convert.ToString(int64 result,2).PadLeft(64,'0')
+        let testString = Convert.ToString(int64 x,2).PadLeft(64,'0')
+        Assert.Equal(String(Array.rev(testString.ToCharArray())), resultString)
+    ulong.randoms 30 |> Array.iter test
