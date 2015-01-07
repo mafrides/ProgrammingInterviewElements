@@ -7,33 +7,34 @@ namespace ProgrammingInterviewElements.CSharp.Tests
 {
     public class BitOperationsTests
     {
-        public static ulong randomUlong(Random generator)
+        private static readonly Random generator = new Random();
+
+        private static ulong randomUlong()
         {
             var bytes = new byte[sizeof(ulong)];
             generator.NextBytes(bytes);
             return BitConverter.ToUInt64(bytes, 0);
         }
 
-        public static List<ulong> randomUlongs(int quantity)
+        private static List<ulong> randomUlongs(int quantity)
         {
             quantity = quantity < 1 ? 1 : quantity;
             var result = new List<ulong>(quantity);
-            Random generator = new Random();
-            for(int i = 0; i < quantity; ++i)
+            for (int i = 0; i < quantity; ++i)
             {
-                result.Add(randomUlong(generator));
+                result.Add(randomUlong());
             }
             return result;
         }
 
         #region Problem 5.1 Tests
 
-        public static readonly List<ulong> Evens4Bit =
+        private static readonly List<ulong> Evens4Bit =
             new List<ulong> {
                 0UL, 3UL, 5UL, 6UL, 9UL, 10UL, 12UL, 15UL
             };
 
-        public static readonly List<ulong> Odds4Bit =
+        private static readonly List<ulong> Odds4Bit =
            new List<ulong> {
                 1UL, 2UL, 4UL, 7UL, 8UL, 11UL, 13UL, 14UL
             };
@@ -41,35 +42,43 @@ namespace ProgrammingInterviewElements.CSharp.Tests
         [Fact]
         public void EvenParity4BitNumsTest()
         {
-            Evens4Bit.ForEach(num =>
-                Assert.True(BitOperations.hasEvenParity(num)));
-            Odds4Bit.ForEach(num =>
-                Assert.False(BitOperations.hasEvenParity(num)));
+            foreach(ulong x in Evens4Bit)
+            {
+                Assert.True(x.hasEvenParity());
+            }
+            foreach(ulong x in Odds4Bit)
+            {
+                Assert.False(x.hasEvenParity());
+            }
         }
 
         [Fact]
         public void OddParity4BitNumsTest()
         {
-            Odds4Bit.ForEach(num =>
-                Assert.True(BitOperations.hasOddParity(num)));
-            Evens4Bit.ForEach(num =>
-                Assert.False(BitOperations.hasOddParity(num)));
+            foreach(ulong x in Odds4Bit)
+            {
+                Assert.True(x.hasOddParity());
+            }
+            foreach(ulong x in Evens4Bit)
+            {
+                Assert.False(x.hasOddParity());
+            }
         }
 
         [Fact]
         public void EvenParity4BitNumCollectionTest()
         {
             //Should be true no matter how many even parity nums are combined
-            Assert.True(BitOperations.hasEvenParity(Evens4Bit));
+            Assert.True(Evens4Bit.hasEvenParity());
             //8 total Odd Parity nums combined, so should be even
-            Assert.True(BitOperations.hasEvenParity(Odds4Bit));
+            Assert.True(Odds4Bit.hasEvenParity());
         }
 
         [Fact]
         public void OddParity4BitNumCollection()
         {
-            Assert.False(BitOperations.hasOddParity(Evens4Bit));
-            Assert.False(BitOperations.hasOddParity(Odds4Bit));
+            Assert.False(Evens4Bit.hasOddParity());
+            Assert.False(Odds4Bit.hasOddParity());
         }
 
         #endregion
@@ -77,41 +86,56 @@ namespace ProgrammingInterviewElements.CSharp.Tests
         #region Problem 5.2 Tests
 
         [Fact]
-        public void exchangeBitsIndexRangeTest()
+        public void swapBitsArgOneOverRange()
         {
-            ulong x = uint.MaxValue; //all ones in lower half
-            ulong y = x;
-            Assert.Equal(BitOperations.exchangeBits(x, 64, 0), y);
-            Assert.Equal(BitOperations.exchangeBits(x, 0, 64), y);
-            Assert.NotEqual(BitOperations.exchangeBits(x, 0, 63), y);
+            ulong x = uint.MaxValue; //0x00000000ffffffff
+            Assert.Equal(x.swapBits(64, 0), x);
         }
 
         [Fact]
-        public void exchangeBitsIGreaterThanJ()
+        public void swapBitsArgOneUnderRange()
         {
-            ulong x = uint.MaxValue;
-            ulong y = x;
-            ulong result = (y - 1UL) | (1UL << 63);
-            Assert.NotEqual(BitOperations.exchangeBits(x, 63, 0), y);
-            Assert.Equal(BitOperations.exchangeBits(x, 63, 0), result);
+            ulong x = uint.MaxValue; //0x00000000ffffffff
+            Assert.Equal(x, x.swapBits(-1, 63));
         }
 
         [Fact]
-        public void exchangeBitsILessThanJ()
+        public void swapBitsArgTwoOverRange()
         {
-            ulong x = uint.MaxValue;
-            ulong y = x;
-            ulong result = (y - 1UL) | (1UL << 63);
-            Assert.NotEqual(BitOperations.exchangeBits(x, 0, 63), y);
-            Assert.Equal(BitOperations.exchangeBits(x, 0, 63), result);
+            ulong x = uint.MaxValue; //0x00000000ffffffff
+            Assert.Equal(x, x.swapBits(1, 64));
         }
 
         [Fact]
-        public void exchangeBitsIEqualsJ()
+        public void swapBitsArgTwoUnderRange()
         {
-            ulong x = uint.MaxValue;
-            ulong y = x;
-            Assert.Equal(BitOperations.exchangeBits(x, 0, 0), y);
+            ulong x = uint.MaxValue; //0x00000000ffffffff
+            Assert.Equal(x, x.swapBits(1, -1));
+        }
+
+        [Fact]
+        public void swapBitsArgsEqual()
+        {
+            ulong x = uint.MaxValue; //0x00000000ffffffff
+            Assert.Equal(x, x.swapBits(0, 0));
+        }
+
+        [Fact]
+        public void swapBitsIGreaterThanJ()
+        {
+            ulong x = uint.MaxValue; //0x00000000ffffffff
+            ulong expected = (x - 1UL) | (1UL << 63);
+            Assert.NotEqual(x.swapBits(63, 0), x);
+            Assert.Equal(expected, x.swapBits(63, 0));
+        }
+
+        [Fact]
+        public void swapBitsILessThanJ()
+        {
+            ulong x = uint.MaxValue; //0x00000000ffffffff
+            ulong expected = (x - 1UL) | (1UL << 63);
+            Assert.NotEqual(x.swapBits(0, 63), x);
+            Assert.Equal(expected, x.swapBits(0, 63));
         }
 
         #endregion
@@ -122,12 +146,12 @@ namespace ProgrammingInterviewElements.CSharp.Tests
         public void reverseBitsTest()
         {
             var testRuns = 30;
-            foreach(ulong testValue in randomUlongs(testRuns))
+            foreach(ulong x in randomUlongs(testRuns))
             {
-                ulong result = BitOperations.reverseBits(testValue);
+                ulong result = x.reverseBits();
                 string resultString = Convert.ToString((long)result, 2).PadLeft(64, '0');
-                string testValueString = Convert.ToString((long)testValue, 2).PadLeft(64, '0');               
-                Assert.Equal(testValueString.Reverse(), resultString);
+                string xString = Convert.ToString((long)x, 2).PadLeft(64, '0');               
+                Assert.Equal(xString.Reverse(), resultString);
             }
         }
 
@@ -138,13 +162,15 @@ namespace ProgrammingInterviewElements.CSharp.Tests
         [Fact]
         public void nearestEqualWeightWorksForZero()
         {
-            Assert.Equal(0UL, BitOperations.nearestEqualWeight(0UL));
+            ulong x = 0UL;
+            Assert.Equal(x, x.nearestEqualWeight());
         }
 
         [Fact]
         public static void nearestEqualWeightWorksForAllOnes()
         {
-            Assert.Equal(ulong.MaxValue, BitOperations.nearestEqualWeight(ulong.MaxValue));
+            ulong x = ulong.MaxValue;
+            Assert.Equal(x, x.nearestEqualWeight());
         }
 
         private static ulong weight(ulong x)
@@ -161,20 +187,20 @@ namespace ProgrammingInterviewElements.CSharp.Tests
         [Fact]
         public static void nearestEqualWeightFindsEqualWeightAnswer()
         {
-            foreach(ulong i in randomUlongs(30))
+            foreach (ulong x in randomUlongs(30))
             {
-                Assert.Equal(weight(i), weight(BitOperations.nearestEqualWeight(i)));
+                Assert.Equal(weight(x), weight(x.nearestEqualWeight()));
             }
         }
 
         [Fact]
         public static void nearestEqualWeightFindsCloseValue()
         {
-            foreach(ulong i in randomUlongs(30))
+            foreach(ulong x in randomUlongs(30))
             {
-                ulong test = BitOperations.nearestEqualWeight(i);
-                ulong checkedDifference = test > i ? test - i : i - test;
-                Assert.True(checkedDifference <= Math.Min(i, test));
+                ulong result = x.nearestEqualWeight();
+                ulong checkedDifference = result > x ? result - x : x - result;
+                Assert.True(checkedDifference <= Math.Min(x, result));
             }
         }
         
@@ -184,29 +210,33 @@ namespace ProgrammingInterviewElements.CSharp.Tests
         [Fact]
         public static void nearestEqualWeightTo12is10()
         {
-            Assert.Equal(10UL, BitOperations.nearestEqualWeight(12UL));
+            ulong x = 12UL;
+            ulong expected = 10UL;
+            Assert.Equal(expected, x.nearestEqualWeight());
         }
 
         [Fact]
         public static void nearestEqualWeightTo8is4()
         {
-            Assert.Equal(4UL, BitOperations.nearestEqualWeight(8UL));
+            ulong x = 8UL;
+            ulong expected = 4UL;
+            Assert.Equal(expected, x.nearestEqualWeight());
         }
 
         [Fact]
         public static void nearestEqualWeightToOneZeroAllOnesIsOneOneZeroAllOnes()
         {
             ulong expected = ulong.MaxValue & (1UL << 61);
-            ulong testVal = ulong.MaxValue & (1UL << 62);
-            Assert.Equal(expected, BitOperations.nearestEqualWeight(testVal));
+            ulong x = ulong.MaxValue & (1UL << 62);
+            Assert.Equal(expected, x.nearestEqualWeight());
         }
 
         [Fact]
         public static void nearestEqualWeightToZeroAllOnesIsOneZeroAllOnes()
         {
             ulong expected = ulong.MaxValue & (1UL << 62);
-            ulong testVal = ulong.MaxValue & (1UL << 63);
-            Assert.Equal(expected, BitOperations.nearestEqualWeight(testVal));
+            ulong x = ulong.MaxValue & (1UL << 63);
+            Assert.Equal(expected, x.nearestEqualWeight());
         }
 
         #endregion

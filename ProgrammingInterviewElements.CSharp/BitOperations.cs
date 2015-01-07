@@ -8,12 +8,6 @@ namespace ProgrammingInterviewElements.CSharp
 {
     public static class BitOperations
     {
-        //I thought this was cool: from ch. 5
-        public static void swap(ref int a, ref int b)
-        {
-            a ^= b ^= a ^= b;
-        }
-
         #region Problem 5.1 Solution
 
         /* 
@@ -22,28 +16,33 @@ namespace ProgrammingInterviewElements.CSharp
          * and work for negative numbers
          * What about little v. big endian?
          */
-        public static bool hasEvenParity(ulong num)
+        public static bool hasEvenParity(this ulong x)
         {
             for (int offset = 1; offset < 64; offset *= 2)
             {
-                num ^= (num << offset);
+                x ^= (x << offset);
             }
-            return 0 == (num & (1UL << 63));
+            return 0 == (x & (1UL << 63));
         }
 
-        public static bool hasOddParity(ulong num)
+        public static bool hasOddParity(this ulong x)
         {
-            return !hasEvenParity(num);
+            return !hasEvenParity(x);
         }
 
-        public static bool hasEvenParity(IEnumerable<ulong> nums)
+        public static bool hasEvenParity(this IEnumerable<ulong> xs)
         {
-            return hasEvenParity(nums.Fold(0UL, (val, acc) => val ^ acc));
+            ulong acc = 0UL;
+            foreach(ulong x in xs)
+            {
+                acc ^= x;
+            }
+            return hasEvenParity(acc);
         }
 
-        public static bool hasOddParity(IEnumerable<ulong> nums)
+        public static bool hasOddParity(this IEnumerable<ulong> xs)
         {
-            return !hasEvenParity(nums);
+            return !hasEvenParity(xs);
         }
 
         #endregion
@@ -51,10 +50,20 @@ namespace ProgrammingInterviewElements.CSharp
         #region Problem 5.2 Solution
 
         //Exchanges bits at index i and j of x, index 0 at right
-        public static ulong exchangeBits(ulong x, int i, int j)
+        public static ulong swapBits(this ulong x, int i, int j)
         {
-            if (i > 63 || j > 63 || i == j) return x;
-            if (i < j) return exchangeBits(x, j, i);
+            if (i < 0  || 
+                i > 63 ||
+                j < 0  || 
+                j > 63 ||
+                i == j)
+            {
+                return x;
+            }
+            if (i < j)
+            {
+                return x.swapBits(j, i);
+            }
             int delta = i - j;
             ulong clearMask = ~((1UL << i) | (1UL << j));
             ulong setMask = ((x >> delta) & (1UL << j)) |
@@ -66,14 +75,14 @@ namespace ProgrammingInterviewElements.CSharp
 
         #region Problem 5.3 Solution
 
-        public const ulong Low1  = 0x5555555555555555;
-        public const ulong Low2  = 0x3333333333333333;
-        public const ulong Low4  = 0x0f0f0f0f0f0f0f0f;
-        public const ulong Low8  = 0x00ff00ff00ff00ff;
-        public const ulong Low16 = 0x0000ffff0000ffff;
-        public const ulong Low32 = 0x00000000ffffffff;
+        private const ulong Low1  = 0x5555555555555555;
+        private const ulong Low2 = 0x3333333333333333;
+        private const ulong Low4 = 0x0f0f0f0f0f0f0f0f;
+        private const ulong Low8 = 0x00ff00ff00ff00ff;
+        private const ulong Low16 = 0x0000ffff0000ffff;
+        private const ulong Low32 = 0x00000000ffffffff;
 
-        public static ulong reverseBits(ulong x)
+        public static ulong reverseBits(this ulong x)
         {
             x = ((x >> 32) & Low32) | ((x << 32) & (Low32 << 32));
             x = ((x >> 16) & Low16) | ((x << 16) & (Low16 << 16));
@@ -88,7 +97,7 @@ namespace ProgrammingInterviewElements.CSharp
 
         #region Problem 5.4 Solution
 
-        public static ulong nearestEqualWeight(ulong x)
+        public static ulong nearestEqualWeight(this ulong x)
         {
             if (x == 0UL || x == ulong.MaxValue)
             {
@@ -101,12 +110,13 @@ namespace ProgrammingInterviewElements.CSharp
                 ulong currentBit = (x & (1UL << i)) == 0UL ? 0UL : 1UL;
                 if (currentBit != lastBit)
                 {
-                    return exchangeBits(x, i, i - 1);
+                    return swapBits(x, i, i - 1);
                 }
                 lastBit = currentBit;
             }
 
-            return 0UL; //can never get here
+            //can never get here
+            throw new InvalidOperationException("Problem 5.4 Solution is very broken");
         }
 
         #endregion
