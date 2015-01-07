@@ -14,7 +14,7 @@ namespace ProgrammingInterviewElements.CSharp
             a ^= b ^= a ^= b;
         }
 
-        #region Problem 5.1 Methods
+        #region Problem 5.1 Solution
 
         /* 
          * Saw a version on wikipedia using >>
@@ -48,7 +48,7 @@ namespace ProgrammingInterviewElements.CSharp
 
         #endregion
 
-        #region Problem 5.2 Methods
+        #region Problem 5.2 Solution
 
         //Exchanges bits at index i and j of x, index 0 at right
         public static ulong exchangeBits(ulong x, uint i, uint j)
@@ -66,7 +66,7 @@ namespace ProgrammingInterviewElements.CSharp
 
         #endregion
 
-        #region Problem 5.3 Methods
+        #region Problem 5.3 Solution
 
         public const ulong Low1  = 0x5555555555555555;
         public const ulong Low2  = 0x3333333333333333;
@@ -83,6 +83,15 @@ namespace ProgrammingInterviewElements.CSharp
             x = ((x >> 4) & Low4) | ((x << 4) & (Low4 << 4));
             x = ((x >> 2) & Low2) | ((x << 2) & (Low2 << 2));
             x = ((x >> 1) & Low1) | ((x << 1) & (Low1 << 1));
+            return x;
+        }
+
+        #endregion
+
+        #region Problem 5.4 Solution
+
+        public static ulong nearestEqualWeight(ulong x)
+        {
             return x;
         }
 

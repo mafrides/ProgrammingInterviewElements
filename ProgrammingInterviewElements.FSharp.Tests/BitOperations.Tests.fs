@@ -125,7 +125,8 @@ let nearestEqualWeightFindsCloseValue() =
     let checkedDifference x y = 
         if x > y then x - y else y - x
     let test x =
-        Assert.True(checkedDifference x <| nearestEqualWeight x <= x)
+        let testVal = nearestEqualWeight x
+        Assert.True(checkedDifference x testVal <= Math.Min(x,testVal))
     List.iter test <| UInt64.randoms 30
 
 // Not sure how to really test this in general without building the solution
