@@ -51,16 +51,14 @@ namespace ProgrammingInterviewElements.CSharp
         #region Problem 5.2 Solution
 
         //Exchanges bits at index i and j of x, index 0 at right
-        public static ulong exchangeBits(ulong x, uint i, uint j)
+        public static ulong exchangeBits(ulong x, int i, int j)
         {
             if (i > 63 || j > 63 || i == j) return x;
             if (i < j) return exchangeBits(x, j, i);
-            int ii = (int)i;
-            int jj = (int)j;
-            int delta = ii - jj;
-            ulong clearMask = ~((1UL << ii) | (1UL << jj));
-            ulong setMask = ((x >> delta) & (1UL << jj)) |
-                            ((x << delta) & (1UL << ii));
+            int delta = i - j;
+            ulong clearMask = ~((1UL << i) | (1UL << j));
+            ulong setMask = ((x >> delta) & (1UL << j)) |
+                            ((x << delta) & (1UL << i));
             return (x & clearMask) | setMask;
         }
 
@@ -92,7 +90,23 @@ namespace ProgrammingInterviewElements.CSharp
 
         public static ulong nearestEqualWeight(ulong x)
         {
-            return x;
+            if (x == 0UL || x == ulong.MaxValue)
+            {
+                return x;
+            }
+            
+            ulong lastBit = x & 1UL;
+            for (int i = 1; i < 64; ++i)
+            {
+                ulong currentBit = (x & (1UL << i)) == 0UL ? 0UL : 1UL;
+                if (currentBit != lastBit)
+                {
+                    return exchangeBits(x, i, i - 1);
+                }
+                lastBit = currentBit;
+            }
+
+            return 0UL; //can never get here
         }
 
         #endregion
