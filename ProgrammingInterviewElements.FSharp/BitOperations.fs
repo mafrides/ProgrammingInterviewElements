@@ -59,8 +59,16 @@ let reverseBits =
 
 //Solution to Problem 5.4
 let nearestEqualWeight x =
-    x
-    
+    let rec parse i acc =
+        let current = getBit (BitPosition i) x
+        if current = acc 
+        then parse (i + 1) current
+        else swapBits (BitPosition i) (BitPosition <| i - 1) x
+    match x with
+    | 0UL -> x
+    | UInt64.MaxValue -> x
+    | _ -> parse 1 (getBit (BitPosition 0) x)
+        
     
 
     

@@ -128,5 +128,28 @@ let nearestEqualWeightFindsCloseValue() =
         Assert.True(checkedDifference x <| nearestEqualWeight x <= x)
     List.iter test <| UInt64.randoms 30
 
-// Not sure how to really test this without building the solution
+// Not sure how to really test this in general without building the solution
 // Brute force test would take too long 
+// So, test a few cases
+let testNearestEqualWeightVals expected testValue =
+    Assert.Equal(expected, nearestEqualWeight testValue)
+
+[<Fact>]
+let nearestEqualWeightTo12is10() =
+    testNearestEqualWeightVals 10UL 12UL
+
+[<Fact>]
+let nearestEqualWeightTo8is4() =
+    testNearestEqualWeightVals 4UL 8UL
+
+[<Fact>]
+let nearestEqualWeightToOneZeroAllOnesIsOneOneZeroAllOnes() =
+    let expected = clearBit (BitPosition 61) UInt64.MaxValue
+    let testVal = clearBit (BitPosition 62) UInt64.MaxValue
+    testNearestEqualWeightVals expected testVal
+
+[<Fact>]
+let nearestEqualWeightToZeroAllOnesIsOneZeroAllOnes() =
+    let expected = clearBit (BitPosition 62) UInt64.MaxValue
+    let testVal = clearBit (BitPosition 63) UInt64.MaxValue
+    testNearestEqualWeightVals expected testVal
