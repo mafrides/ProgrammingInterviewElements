@@ -56,6 +56,10 @@ let reverseBits =
             ((num >>> offset) &&& mask) ||| ((num <<< offset) &&& (mask <<< offset))
         Masks |> List.fold flip x               
     reverseBitsInternal 
+
+//Solution to Problem 5.4
+let nearestEqualWeight x =
+    x
     
     
 

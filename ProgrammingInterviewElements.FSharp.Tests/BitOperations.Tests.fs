@@ -97,4 +97,36 @@ let reverseBitsReversesBits() =
         let givenString = Convert.ToString(int64 x,2).PadLeft(64,'0')
         let givenStringReversed = String(Array.rev(givenString.ToCharArray()))
         Assert.Equal(givenStringReversed, resultString)
-    ulong.randoms 30 |> List.iter test
+    List.iter test <| UInt64.randoms 30
+
+// Problem 5.4 Tests
+
+[<Fact>]
+let nearestEqualWeightWorksForZero() =
+    Assert.Equal(0UL, nearestEqualWeight 0UL)
+
+[<Fact>]
+let nearestEqualWeightWorksForAllOnes() =
+    Assert.Equal(UInt64.MaxValue, nearestEqualWeight UInt64.MaxValue)
+
+let weight x =
+    let folder acc i = match getBit (BitPosition i) x with
+                       | Zero -> acc
+                       | One -> acc + 1
+    {1..64} |> Seq.fold folder 0
+
+[<Fact>]
+let nearestEqualWeightFindsEqualWeightAnswer() =
+    let test x = Assert.Equal(weight x, weight <| nearestEqualWeight x)
+    List.iter test <| UInt64.randoms 30 
+
+[<Fact>]
+let nearestEqualWeightFindsCloseValue() =
+    let checkedDifference x y = 
+        if x > y then x - y else y - x
+    let test x =
+        Assert.True(checkedDifference x <| nearestEqualWeight x <= x)
+    List.iter test <| UInt64.randoms 30
+
+// Not sure how to really test this without building the solution
+// Brute force test would take too long 
