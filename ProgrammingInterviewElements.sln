@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProgrammingInterviewElements.CSharp", "ProgrammingInterviewElements.CSharp\ProgrammingInterviewElements.CSharp.csproj", "{2429D385-20A4-47E5-9A1C-CAD0A57E219C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpSolutions", "CSharpSolutions\CSharpSolutions.csproj", "{2429D385-20A4-47E5-9A1C-CAD0A57E219C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProgrammingInterviewElements.CSharp.Tests", "ProgrammingInterviewElements.CSharp.Tests\ProgrammingInterviewElements.CSharp.Tests.csproj", "{FDD2476F-31CC-435B-9AB0-95DAE01AFDCC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpTests", "CSharpTests\CSharpTests.csproj", "{FDD2476F-31CC-435B-9AB0-95DAE01AFDCC}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ProgrammingInterviewElements.FSharp.Tests", "ProgrammingInterviewElements.FSharp.Tests\ProgrammingInterviewElements.FSharp.Tests.fsproj", "{01D3B446-A49A-4CD8-A9FD-5BAFEABF6625}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSharpTests", "FSharpTests\FSharpTests.fsproj", "{01D3B446-A49A-4CD8-A9FD-5BAFEABF6625}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ProgrammingInterviewElements.FSharp", "ProgrammingInterviewElements.FSharp\ProgrammingInterviewElements.FSharp.fsproj", "{96C680EC-FB80-4445-958D-D54CE8E992FD}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSharpSolutions", "FSharpSolutions\FSharpSolutions.fsproj", "{96C680EC-FB80-4445-958D-D54CE8E992FD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{01CA8874-22D8-4E5E-8265-85655E7A8555}"
 	ProjectSection(SolutionItems) = preProject
