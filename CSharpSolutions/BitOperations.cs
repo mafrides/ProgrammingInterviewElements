@@ -10,12 +10,8 @@ namespace ProgrammingInterviewElements.CSharp
     {
         #region Problem 5.1 Solution
 
-        /* 
-         * Saw a version on wikipedia using >>
-         * << should avoid sign extension issue
-         * and work for negative numbers
-         * What about little v. big endian?
-         */
+        // Calculate parity of a sequence of numbers
+
         public static bool hasEvenParity(this ulong x)
         {
             for (int offset = 1; offset < 64; offset *= 2)
@@ -49,7 +45,8 @@ namespace ProgrammingInterviewElements.CSharp
 
         #region Problem 5.2 Solution
 
-        //Exchanges bits at index i and j of x, index 0 at right
+        // Swap bits by index
+
         public static ulong swapBits(this ulong x, int i, int j)
         {
             if (i < 0  || 
@@ -75,6 +72,8 @@ namespace ProgrammingInterviewElements.CSharp
 
         #region Problem 5.3 Solution
 
+        // Reverse bits in a number
+
         private const ulong Low1  = 0x5555555555555555;
         private const ulong Low2 = 0x3333333333333333;
         private const ulong Low4 = 0x0f0f0f0f0f0f0f0f;
@@ -97,6 +96,8 @@ namespace ProgrammingInterviewElements.CSharp
 
         #region Problem 5.4 Solution
 
+        // Find nearest number with equal weight (equal number of 1's)
+
         public static ulong nearestEqualWeight(this ulong x)
         {
             if (x == 0UL || x == ulong.MaxValue)
@@ -117,6 +118,34 @@ namespace ProgrammingInterviewElements.CSharp
 
             //can never get here
             throw new InvalidOperationException("Problem 5.4 Solution is very broken");
+        }
+
+        #endregion
+
+        #region Problem 5.5 Solution
+
+        //// Multiply 2 unsigned numbers without + or *
+
+        //unchecked
+        public static ulong bitAdd(this ulong x, ulong y)
+        {
+            ulong sum = x ^ y;
+            ulong carry = (x & y) << 1;
+            return carry == 0UL ? sum : sum.bitAdd(carry);
+        }
+
+        //unchecked
+        public static ulong bitMult(this ulong x, ulong y)
+        {
+            ulong result = 0UL;
+            for (int i = 0; i < 64; ++i)
+            {
+                if ((y & (1UL << i)) != 0UL)
+                {
+                    result = result.bitAdd(x << i);
+                }
+            }
+            return result;
         }
 
         #endregion

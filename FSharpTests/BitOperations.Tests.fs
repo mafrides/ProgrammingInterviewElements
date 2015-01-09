@@ -12,6 +12,7 @@ let isEven x = x % 2 = 0
 let isOdd x = not <| isEven x
 
 // Problem 5.1 Tests
+// Calculate parity of a sequence of numbers
 
 [<Fact>]
 let hasEvenParityPassesForEvens() =
@@ -58,6 +59,7 @@ let hasOddParitySeqFailsForEvens() =
     Assert.False <| Seq.hasOddParity Evens4Bit
     
 // Problem 5.2 Tests
+// Swap bits by index
 
 [<Fact>]
 let swapBitsUlongReturnsIntialValueWhenBitPositionsEqual =
@@ -77,6 +79,7 @@ let swapBitsULongSwapsWhenArg1LessThanArg2 =
     Assert.Equal(expected, x |> swapBits (BitPosition 0) (BitPosition 63))
 
 // Problem 5.3 Tests
+// Reverse bits in a number
 
 type UInt64 with
     static member random =
@@ -100,6 +103,7 @@ let reverseBitsReversesBits() =
     List.iter test <| UInt64.randoms 30
 
 // Problem 5.4 Tests
+// Find nearest number with equal weight (equal number of 1's)
 
 [<Fact>]
 let nearestEqualWeightWorksForZero() =
@@ -154,3 +158,20 @@ let nearestEqualWeightToZeroAllOnesIsOneZeroAllOnes() =
     let expected = clearBit (BitPosition 62) UInt64.MaxValue
     let testVal = clearBit (BitPosition 63) UInt64.MaxValue
     testNearestEqualWeightVals expected testVal
+
+// Problem 5.5 Tests
+// Multiply 2 unsigned numbers without + or *
+
+[<Fact>]
+let BitAddAdds() =
+    let test (i,j) = 
+        Assert.Equal(i + j, bitAdd i j)
+    let sample = List.zip (UInt64.randoms 30) (UInt64.randoms 30)
+    List.iter test sample
+
+[<Fact>]
+let BitMultMultiplies() =
+    let test (i,j) = 
+        Assert.Equal(i * j, bitMult i j)
+    let sample = List.zip (UInt64.randoms 30) (UInt64.randoms 30)
+    List.iter test sample

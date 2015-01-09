@@ -29,6 +29,8 @@ namespace ProgrammingInterviewElements.CSharp.Tests
 
         #region Problem 5.1 Tests
 
+        // Calculate parity of a sequence of numbers
+
         private static readonly List<ulong> Evens4Bit =
             new List<ulong> {
                 0UL, 3UL, 5UL, 6UL, 9UL, 10UL, 12UL, 15UL
@@ -84,6 +86,8 @@ namespace ProgrammingInterviewElements.CSharp.Tests
         #endregion
 
         #region Problem 5.2 Tests
+
+        // Swap bits by index
 
         [Fact]
         public void swapBitsArgOneOverRange()
@@ -142,6 +146,8 @@ namespace ProgrammingInterviewElements.CSharp.Tests
 
         #region Problem 5.3 Tests
 
+        // Reverse bits in a number
+
         [Fact]
         public void reverseBitsTest()
         {
@@ -158,6 +164,8 @@ namespace ProgrammingInterviewElements.CSharp.Tests
         #endregion
 
         #region Problem 5.4 Tests
+
+        // Find nearest number with equal weight (equal number of 1's)
 
         [Fact]
         public void nearestEqualWeightWorksForZero()
@@ -237,6 +245,44 @@ namespace ProgrammingInterviewElements.CSharp.Tests
             ulong expected = ulong.MaxValue & (1UL << 62);
             ulong x = ulong.MaxValue & (1UL << 63);
             Assert.Equal(expected, x.nearestEqualWeight());
+        }
+
+        #endregion
+
+        #region Problem 5.5 Tests
+
+        // Multiply 2 unsigned numbers without + or *
+
+        [Fact]
+        public static void bitAddAdds()
+        {
+            var xs = randomUlongs(10);
+            var ys = randomUlongs(10);
+            foreach(ulong x in xs)
+            {
+                foreach(ulong y in ys)
+                {
+                    ulong expected = x + y;
+                    Assert.Equal(expected, x.bitAdd(y));
+                    Assert.Equal(expected, y.bitAdd(x));
+                }
+            }
+        }
+
+        [Fact]
+        public static void bitMultMultiplies()
+        {
+            var xs = randomUlongs(10);
+            var ys = randomUlongs(10);
+            foreach (ulong x in xs)
+            {
+                foreach (ulong y in ys)
+                {
+                    ulong expected = x * y;
+                    Assert.Equal(expected, x.bitMult(y));
+                    Assert.Equal(expected, y.bitMult(x));
+                }
+            }
         }
 
         #endregion

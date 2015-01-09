@@ -20,7 +20,9 @@ let clearBit = setBitTo Zero
 let getHighBit = getBit (BitPosition 63)
 let getLowBit = getBit (BitPosition 0)
 
-//Solution to Prob 5.1
+// Solution to Prob 5.1
+// Calculate parity of a sequence of numbers
+
 let hasEvenParity x =
     let powersOf2_1To32 = Seq.unfold (fun i -> if i >= 64 then None else Some(i, i * 2)) 1
     let bitwiseXOrInHighBit = powersOf2_1To32 |> Seq.fold (fun acc offset -> acc ^^^ (acc <<< offset)) x 
@@ -35,14 +37,18 @@ module Seq =
     let hasOddParity xs =
         not <| hasEvenParity xs
 
-//Solution to Problem 5.2
+// Solution to Problem 5.2
+// Swap bits by index
+
 let swapBits i j x =
     let newI = getBit j x
     let newJ = getBit i x
     let y = setBitTo newI i x
     setBitTo newJ j y
 
-//Solution to Problem 5.3
+// Solution to Problem 5.3
+// Reverse bits in a number
+
 let reverseBits = 
     let Masks = 
         [ 0x00000000ffffffffUL, 32
@@ -57,7 +63,9 @@ let reverseBits =
         Masks |> List.fold flip x               
     reverseBitsInternal 
 
-//Solution to Problem 5.4
+// Solution to Problem 5.4
+// Find nearest number with equal weight (equal number of 1's)
+
 let nearestEqualWeight x =
     let rec parse i acc =
         let current = getBit (BitPosition i) x
@@ -69,8 +77,26 @@ let nearestEqualWeight x =
     | UInt64.MaxValue -> x
     | _ -> parse 1 (getBit (BitPosition 0) x)
         
-    
+// Solution to Problem 5.5
+// Multiply 2 unsigned numbers without + or *  
 
+// unchecked 
+let bitAdd x y =
+    let rec bitAddInternal x' y' =
+        let sum = x' ^^^ y';
+        let carry = (x' &&& y') <<< 1
+        match carry with
+        | 0UL -> sum
+        | _ -> bitAddInternal sum carry
+    bitAddInternal x y
+
+// unchecked
+let bitMult x y =
+    let folder acc i =
+        match getBit (BitPosition i) y with
+        | Zero -> acc
+        | One -> acc |> bitAdd <| (x <<< i)
+    List.fold folder 0UL [0..63]
     
     
 
