@@ -88,7 +88,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ProgrammingInterviewElements.FSharp\FSharpSolutions.fsproj">
+    <ProjectReference Include="..\FSharpSolutions\FSharpSolutions.fsproj">
       <Name>FSharpSolutions</Name>
       <Project>{96c680ec-fb80-4445-958d-d54ce8e992fd}</Project>
       <Private>True</Private>

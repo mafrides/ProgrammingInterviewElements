@@ -60,7 +60,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ProgrammingInterviewElements.CSharp\ProgrammingInterviewElements.CSharp.csproj">
+    <ProjectReference Include="..\CSharpSolutions\CSharpSolutions.csproj">
       <Project>{2429d385-20a4-47e5-9a1c-cad0a57e219c}</Project>
       <Name>ProgrammingInterviewElements.CSharp</Name>
     </ProjectReference>

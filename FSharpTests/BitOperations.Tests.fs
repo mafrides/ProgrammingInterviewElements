@@ -1,7 +1,7 @@
 ﻿module BitOperations.Tests
 
 open Xunit
-open ProgrammingInterviewElements.FSharp.BitOperations
+open BitOperations
 open System
 open System.Collections.Generic
 

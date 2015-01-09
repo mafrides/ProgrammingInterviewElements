@@ -1,4 +1,4 @@
-﻿module ProgrammingInterviewElements.FSharp.BitOperations
+﻿module BitOperations
 
 open System
 open System.Collections.Generic
