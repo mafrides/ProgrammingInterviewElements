@@ -98,5 +98,10 @@ let bitMult x y =
         | One -> acc |> bitAdd <| (x <<< i)
     List.fold folder 0UL [0..63]
     
+// Solution to Problem 5.6
+// Divide 2 unsigned numbers with +, -, shift
+
+let tryBitDiv x y =
+    Some <| x + y + 0UL
     
 

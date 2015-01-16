@@ -163,15 +163,33 @@ let nearestEqualWeightToZeroAllOnesIsOneZeroAllOnes() =
 // Multiply 2 unsigned numbers without + or *
 
 [<Fact>]
-let BitAddAdds() =
+let bitAddAdds() =
     let test (i,j) = 
         Assert.Equal(i + j, bitAdd i j)
     let sample = List.zip (UInt64.randoms 30) (UInt64.randoms 30)
     List.iter test sample
 
 [<Fact>]
-let BitMultMultiplies() =
+let bitMultMultiplies() =
     let test (i,j) = 
         Assert.Equal(i * j, bitMult i j)
     let sample = List.zip (UInt64.randoms 30) (UInt64.randoms 30)
+    List.iter test sample
+
+// Problem 5.6 Tests
+// Divide 2 unsigned numbers with +, -, shift
+
+[<Fact>]
+let bitDivDivides() =
+    let test (i,j) =
+        let j' = if j = 0UL then 1UL else j
+        Assert.Equal(Some (i / j'), tryBitDiv i j')                            
+    let sample = List.zip (UInt64.randoms 30) (UInt64.randoms 30)
+    List.iter test sample
+
+[<Fact>]
+let bitDivReturnsNoneOnDivideByZero() = 
+    let test i =
+        Assert.Equal(None, tryBitDiv i 0UL)
+    let sample = UInt64.randoms 30
     List.iter test sample
