@@ -102,6 +102,29 @@ let bitMult x y =
 // Divide 2 unsigned numbers with +, -, shift
 
 let tryBitDiv x y =
-    Some <| x + y + 0UL
+    let rec leftAlign maxShifts num' =
+        match num' <<< 1 with
+        | next when next < num' -> maxShifts, num'
+        | next when next > x -> maxShifts, num'
+        | next -> leftAlign (maxShifts + 1) next
+    let rightAlign num withNum maxShifts =
+        let rec rightAlignInternal maxShifts' num' =
+            match num' >>> 1 with
+            | _ when maxShifts' = 0 -> None
+            | next when next < withNum -> Some (maxShifts' - 1, next)
+            | next -> rightAlignInternal (maxShifts' - 1) next
+        rightAlignInternal maxShifts num
+    let rec bitDiv acc shifts x' y' =
+        let x'' = x' - y'
+        let acc' = acc + (1UL <<< shifts)
+        match rightAlign y' x'' shifts with
+        | None -> acc'
+        | Some(i,y'') -> bitDiv acc' i x'' y''                       
+    match y with
+    | 0UL -> None
+    | _ when y > x -> Some 0UL
+    | _ -> let maxShifts, yInit = leftAlign 0 y
+           Some <| bitDiv 0UL maxShifts x yInit
+
     
 
