@@ -154,10 +154,53 @@ namespace ProgrammingInterviewElements.CSharp
 
         // Divide 2 unsigned numbers with +, -, shift
 
+        // Returns number of left shifts
+        private static int initialAlign(ref ulong divisor, ulong with)
+        {
+            int leftShifts = 0;
+            for (ulong next = divisor << 1; next > divisor && next <= with; ++leftShifts)
+            {
+                divisor = next;
+                next = divisor << 1;
+            }
+            return leftShifts;
+        }
+
+        // Returns remain shifts or -1 if cannot align
+        private static int rightAlign(ref ulong divisor, ulong with, int maxShifts)
+        {
+            for (ulong next = divisor >> 1; maxShifts > 0 && divisor > with; --maxShifts)
+            {
+                divisor = next;
+                next = divisor >> 1;
+            }
+            return divisor > with ? -1 : maxShifts;
+        }
+
         // Throw Invalid Operation Exception
         public static ulong bitDiv(this ulong x, ulong y)
         {
-            return ulong.MaxValue;
+            if (y == 0UL)
+            {
+                throw new InvalidOperationException("Divide by Zero");
+            }
+            
+            //truncate
+            if (y > x)
+            {
+                return 0UL;
+            }
+
+            ulong result = 0UL;
+            int shifts = initialAlign(ref y, with: x);
+            do
+            {
+                result += (1UL << shifts);
+                x -= y;
+                shifts = rightAlign(ref y, with: x, maxShifts: shifts);
+            } while (shifts > -1);
+
+            return result;
         }
 
         #endregion
