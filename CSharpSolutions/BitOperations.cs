@@ -124,7 +124,7 @@ namespace ProgrammingInterviewElements.CSharp
 
         #region Problem 5.5 Solution
 
-        //// Multiply 2 unsigned numbers without + or *
+        // Multiply 2 unsigned numbers without + or *
 
         //unchecked
         public static ulong bitAdd(this ulong x, ulong y)
@@ -146,6 +146,18 @@ namespace ProgrammingInterviewElements.CSharp
                 }
             }
             return result;
+        }
+
+        #endregion
+
+        #region Problem 5.6 Solution
+
+        // Divide 2 unsigned numbers with +, -, shift
+
+        // Throw Invalid Operation Exception
+        public static ulong bitDiv(this ulong x, ulong y)
+        {
+            return ulong.MaxValue;
         }
 
         #endregion

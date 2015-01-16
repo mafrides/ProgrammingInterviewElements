@@ -286,5 +286,40 @@ namespace ProgrammingInterviewElements.CSharp.Tests
         }
 
         #endregion
+
+        #region Problem 5.6 Tests
+
+        // Divide 2 unsigned numbers with +, -, shift
+
+        [Fact]
+        public static void bitDivDivides()
+        {
+            var xs = randomUlongs(10);
+            var ys = randomUlongs(10);
+            foreach (ulong x in xs)
+            {
+                foreach(ulong y in ys)
+                {
+                    if (y == 0UL)
+                    {
+                        continue;
+                    }
+                    ulong expected = x / y;
+                    Assert.Equal(expected, x.bitDiv(y));
+                }
+            }
+        }
+
+        [Fact]
+        public static void bitDivThrowsInvalidOperationExceptionOnDivideByZero()
+        {
+            var xs = randomUlongs(30);
+            foreach (ulong x in xs)
+            {
+                Assert.Throws<InvalidOperationException>(() => x.bitDiv(0UL));
+            }
+        }
+
+        #endregion
     }
 }
