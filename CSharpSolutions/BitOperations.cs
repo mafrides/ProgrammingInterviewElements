@@ -204,5 +204,17 @@ namespace ProgrammingInterviewElements.CSharp
         }
 
         #endregion
+
+        #region Problem 5.7 Solution
+
+        // Compute x^y, x double, y int
+        // in time linear in the number of bits of y
+        // assume primitives are constant time
+        public static double pow(this double x, ulong y)
+        {
+            return x;
+        }
+
+        #endregion
     }
 }

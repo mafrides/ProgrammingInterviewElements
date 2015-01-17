@@ -27,6 +27,22 @@ namespace ProgrammingInterviewElements.CSharp.Tests
             return result;
         }
 
+        private static double randomDouble()
+        {
+            return generator.NextDouble();
+        }
+
+        private static List<double> randomDoubles(int quantity)
+        {
+            quantity = quantity < 1 ? 1 : quantity;
+            var result = new List<double>(quantity);
+            for (int i = 0; i < quantity; ++i)
+            {
+                result.Add(randomDouble());
+            }
+            return result;
+        }
+
         #region Problem 5.1 Tests
 
         // Calculate parity of a sequence of numbers
@@ -318,6 +334,46 @@ namespace ProgrammingInterviewElements.CSharp.Tests
             {
                 Assert.Throws<InvalidOperationException>(() => x.bitDiv(0UL));
             }
+        }
+
+        #endregion
+
+        #region Problem 5.7 Tests
+
+        // Compute x^y, x double, y int
+        // in time linear in the number of bits of y
+        // assume primitives are constant time
+
+        [Fact]
+        public static void powCalculatesExponents()
+        {
+            int sample = 30;
+            double epsilon = 1e-6;
+            var xs = randomDoubles(sample);
+            var ys = randomUlongs(sample);
+            for (int i = 0; i < sample; ++i)
+            {
+                double x = xs[i];
+                ulong y = ys[i];
+                double expected = Math.Pow(x, (double)y);
+                double actual = x.pow(y);
+
+                Assert.True(Math.Abs(expected - actual) < epsilon);
+            }
+        }
+
+        [Fact]
+        public static void powExponentZeroIsOne()
+        {
+            int sample = 10;
+            double epsilon = 1e-6;
+            double expected = 1.0;
+            var xs = randomDoubles(sample);
+            foreach (double x in xs)
+            {
+                double actual = x.pow(0UL);
+                Assert.True(Math.Abs(expected - actual) < epsilon);
+            }            
         }
 
         #endregion
