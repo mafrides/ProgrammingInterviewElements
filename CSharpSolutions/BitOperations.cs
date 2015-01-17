@@ -224,12 +224,13 @@ namespace ProgrammingInterviewElements.CSharp
 
         public static double pow(this double x, ulong y)
         {
+            double result = 1.0;
+            
             if (y == 0UL)
             {
-                return 1.0;
+                return result;
             }
-
-            double result = 0.0;
+           
             for (int i = 0; i < 64; ++i)
             {
                 if (y.bitIsOne(i))
