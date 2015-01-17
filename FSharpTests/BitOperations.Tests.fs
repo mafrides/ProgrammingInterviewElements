@@ -193,3 +193,38 @@ let bitDivReturnsNoneOnDivideByZero() =
         Assert.Equal(None, tryBitDiv i 0UL)
     let sample = UInt64.randoms 30
     List.iter test sample
+
+// Problem 5.7 Tests
+// Compute x^y, x double, y int
+// in time linear in the number of bits of y
+// assume primitives are constant time
+
+type Double with
+    static member random =
+        let r = Random()
+        r.NextDouble
+    static member randoms count =
+        List.init count (fun _ -> Double.random())
+
+[<Fact>]
+let powWithExponentZeroReturnsOne() =
+    let epsilon = 1e-6
+    let expected = 1.0
+    let test i =
+        let actual = pow i 0UL
+        Assert.True(Math.Abs(expected - actual) < epsilon)
+    let sample = Double.randoms 10
+    List.iter test sample
+
+[<Fact>]
+let powCalculatesExponents() =
+    let epsilon = 1e-6
+    let test (i,j) =
+        let expected = Math.Pow(i, float j)
+        let actual = pow i j
+        Assert.True(Math.Abs(expected - actual) < epsilon)
+    let sample =
+        let size = 30
+        List.zip (Double.randoms size) (ulong.randoms size)
+    List.iter test sample
+        

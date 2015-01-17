@@ -126,5 +126,11 @@ let tryBitDiv x y =
     | _ -> let maxShifts, yInit = leftAlign 0 y
            Some <| bitDiv 0UL maxShifts x yInit
 
-    
+// Problem 5.7 Solution
+// Compute x^y, x double, y int
+// in time linear in the number of bits of y
+// assume primitives are constant time
+
+let pow (x:double) (y:ulong) =
+    x    
 
