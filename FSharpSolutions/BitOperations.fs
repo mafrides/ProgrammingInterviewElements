@@ -132,5 +132,14 @@ let tryBitDiv x y =
 // assume primitives are constant time
 
 let pow (x:double) (y:ulong) =
-    x    
+    let rec loop acc x' i =
+        match i with
+        | i' when i' > 63 -> acc
+        | _ -> match getBit (BitPosition i) y with
+               | One -> loop (acc * x') (x' * x') (i + 1)
+               | Zero -> loop (acc) (x' * x') (i + 1)
+    match y with
+    | 0UL -> 1.0
+    | _ -> loop 1.0 x 0
+         
 
