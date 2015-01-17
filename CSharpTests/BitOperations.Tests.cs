@@ -358,7 +358,9 @@ namespace ProgrammingInterviewElements.CSharp.Tests
                 double expected = Math.Pow(x, (double)y);
                 double actual = x.pow(y);
 
-                Assert.True(Math.Abs(expected - actual) < epsilon);
+                Assert.True(Math.Abs(expected - actual) < epsilon,
+                            String.Format("Base: {0}, Exp: {1}, Expected: {2}, Actual {3}",
+                                           x, y, expected, actual));
             }
         }
 
@@ -372,7 +374,9 @@ namespace ProgrammingInterviewElements.CSharp.Tests
             foreach (double x in xs)
             {
                 double actual = x.pow(0UL);
-                Assert.True(Math.Abs(expected - actual) < epsilon);
+                Assert.True(Math.Abs(expected - actual) < epsilon,
+                            String.Format("Base: {0}, Exp: {1}, Expected: {2}, Actual {3}",
+                                           x, 0UL, expected, actual));
             }            
         }
 

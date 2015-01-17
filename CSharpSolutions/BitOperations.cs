@@ -211,9 +211,35 @@ namespace ProgrammingInterviewElements.CSharp
         // in time linear in the number of bits of y
         // assume primitives are constant time
 
+        //constant time for the purposes of this problem
+        private static bool bitIsOne(this ulong x, int i)
+        {
+            if (i < 0 || i > 63)
+            {
+                return false;
+            }
+
+            return (x & (1UL << i)) != 0UL;
+        }
+
         public static double pow(this double x, ulong y)
         {
-            return x;
+            if (y == 0UL)
+            {
+                return 1.0;
+            }
+
+            double result = 0.0;
+            for (int i = 0; i < 64; ++i)
+            {
+                if (y.bitIsOne(i))
+                {
+                    result *= x;
+                }
+                x *= x;
+            }
+
+            return result;
         }
 
         #endregion
